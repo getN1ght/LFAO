@@ -1,7 +1,11 @@
 package com.example.lfao;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.google.android.material.snackbar.Snackbar;
@@ -42,8 +46,29 @@ public class ListActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                textList.add("efefe");
-                adapter.notifyDataSetChanged();
+
+                AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
+
+
+                final EditText edittext = new EditText(ListActivity.this);
+                alert.setTitle("Add item");
+
+                alert.setView(edittext);
+
+                alert.setPositiveButton("Add", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        String text = edittext.getText().toString();
+                        textList.add(text);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                    }
+                });
+
+                alert.show();
             }
         });
     }
