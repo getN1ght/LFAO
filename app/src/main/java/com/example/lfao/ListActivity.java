@@ -33,6 +33,7 @@ public class ListActivity extends AppCompatActivity {
         binding = ActivityListBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
+        getSupportActionBar().setTitle("Your list");
 
         listView = (ListView) findViewById(R.id.list_view);
 
@@ -64,8 +65,10 @@ public class ListActivity extends AppCompatActivity {
                 alert.setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String text = edittext.getText().toString();
-                        textList.add(text);
-                        adapter.notifyDataSetChanged();
+                        if (!text.isEmpty()){
+                            textList.add(text);
+                            adapter.notifyDataSetChanged();
+                        }
                     }
                 });
 
