@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/grey/AppData/Local/Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/grey/IdeaProjects/LFAO/app/src/main/res/layout/activity_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/grey/IdeaProjects/LFAO/app/src/main/res/layout/activity_login.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/grey/IdeaProjects/LFAO/app/src/main/res/layout/content_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/grey/IdeaProjects/LFAO/app/src/main/res/layout/fragment_first.xml" value="0.19746376811594202" />
       </map>
     </option>
