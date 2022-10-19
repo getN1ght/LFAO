@@ -1,6 +1,8 @@
 package com.example.lfao.ui.login;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.lfao.ListActivity;
 import com.example.lfao.R;
 import com.example.lfao.ui.login.LoginViewModel;
 import com.example.lfao.ui.login.LoginViewModelFactory;
@@ -74,7 +77,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
+                Intent intent = new Intent(getApplicationContext(), ListActivity.class);
+                startActivity(intent);
+
                 finish();
             }
         });
