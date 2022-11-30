@@ -21,7 +21,7 @@ public class ListActivity extends AppCompatActivity {
 
     private ListView listView;
 
-    private final ArrayList<String> textList = new ArrayList<>(Collections.singletonList("Empty"));
+    private final ArrayList<String> textList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,11 +38,49 @@ public class ListActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, android.R.id.text1, textList);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener((parent, itemClicked, position, id) -> {
-            textList.remove(position);
-            adapter.notifyDataSetChanged();
+        /* Deletion*/
+        listView.setOnItemLongClickListener((parent, itemClicked, position, id) -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
+            alert.setTitle("Delete item?");
+            alert.setPositiveButton("Delete", (dialog, whichButton) -> {
+                textList.remove(position);
+                adapter.notifyDataSetChanged();
+            });
+
+            alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
+            });
+
+            alert.show();
+            return true;
         });
 
+
+        /* Editing */
+        listView.setOnItemClickListener((parent, itemClicked, position, id) -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
+
+            final EditText edittext = new EditText(ListActivity.this);
+            edittext.setText(textList.get(position));
+            alert.setTitle("Edit item");
+
+            alert.setView(edittext);
+
+            alert.setPositiveButton("Edit", (dialog, whichButton) -> {
+                String text = edittext.getText().toString();
+                if (!text.isEmpty()) {
+                    textList.set(position, text);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+            alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
+            });
+
+            alert.show();
+        });
+
+
+        /* Adding */
         binding.fab.setOnClickListener(view -> {
             AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
 
@@ -52,19 +90,15 @@ public class ListActivity extends AppCompatActivity {
 
             alert.setView(edittext);
 
-            alert.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                    String text = edittext.getText().toString();
-                    if (!text.isEmpty()) {
-                        textList.add(text);
-                        adapter.notifyDataSetChanged();
-                    }
+            alert.setPositiveButton("Add", (dialog, whichButton) -> {
+                String text = edittext.getText().toString();
+                if (!text.isEmpty()) {
+                    textList.add(text);
+                    adapter.notifyDataSetChanged();
                 }
             });
 
-            alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int whichButton) {
-                }
+            alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
             });
 
             alert.show();
