@@ -1,7 +1,6 @@
 package com.example.lfao.ui.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,8 +21,6 @@ import android.widget.Toast;
 
 import com.example.lfao.ListActivity;
 import com.example.lfao.R;
-import com.example.lfao.ui.login.LoginViewModel;
-import com.example.lfao.ui.login.LoginViewModelFactory;
 import com.example.lfao.databinding.ActivityLoginBinding;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,8 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
 
         final EditText usernameEditText = binding.username;
         final EditText passwordEditText = binding.password;

@@ -1,5 +1,8 @@
 package com.example.lfao.ui.login;
 
+import android.app.Application;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -10,14 +13,15 @@ import com.example.lfao.data.Result;
 import com.example.lfao.data.model.LoggedInUser;
 import com.example.lfao.R;
 
-public class LoginViewModel extends ViewModel {
+public class LoginViewModel extends AndroidViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
     private LoginRepository loginRepository;
 
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public LoginViewModel(@NonNull Application application) {
+        super(application);
+        loginRepository = LoginRepository.getInstance(application);
     }
 
     LiveData<LoginFormState> getLoginFormState() {
