@@ -3,11 +3,8 @@ package com.example.lfao;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Editable;
 import android.widget.*;
-import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -15,7 +12,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.lfao.databinding.ActivityListBinding;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -24,7 +21,7 @@ public class ListActivity extends AppCompatActivity {
 
     private ListView listView;
 
-    private ArrayList<String> textList = new ArrayList<>(Arrays.asList("Empty"));
+    private final ArrayList<String> textList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,50 +32,76 @@ public class ListActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
         getSupportActionBar().setTitle("Your list");
 
-        listView = (ListView) findViewById(R.id.list_view);
+        listView = findViewById(R.id.list_view);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, textList);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
-                                    long id) {
+        /* Deletion*/
+        listView.setOnItemLongClickListener((parent, itemClicked, position, id) -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
+            alert.setTitle("Delete item?");
+            alert.setPositiveButton("Delete", (dialog, whichButton) -> {
                 textList.remove(position);
                 adapter.notifyDataSetChanged();
-            }
+            });
+
+            alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
+            });
+
+            alert.show();
+            return true;
         });
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
+        /* Editing */
+        listView.setOnItemClickListener((parent, itemClicked, position, id) -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
+
+            final EditText edittext = new EditText(ListActivity.this);
+            edittext.setText(textList.get(position));
+            alert.setTitle("Edit item");
+
+            alert.setView(edittext);
+
+            alert.setPositiveButton("Edit", (dialog, whichButton) -> {
+                String text = edittext.getText().toString();
+                if (!text.isEmpty()) {
+                    textList.set(position, text);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+            alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
+            });
+
+            alert.show();
+        });
 
 
-                final EditText edittext = new EditText(ListActivity.this);
-                alert.setTitle("Add item");
+        /* Adding */
+        binding.fab.setOnClickListener(view -> {
+            AlertDialog.Builder alert = new AlertDialog.Builder(ListActivity.this);
 
-                alert.setView(edittext);
 
-                alert.setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String text = edittext.getText().toString();
-                        if (!text.isEmpty()){
-                            textList.add(text);
-                            adapter.notifyDataSetChanged();
-                        }
-                    }
-                });
+            final EditText edittext = new EditText(ListActivity.this);
+            alert.setTitle("Add item");
 
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                    }
-                });
+            alert.setView(edittext);
 
-                alert.show();
-            }
+            alert.setPositiveButton("Add", (dialog, whichButton) -> {
+                String text = edittext.getText().toString();
+                if (!text.isEmpty()) {
+                    textList.add(text);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
+            alert.setNegativeButton("Cancel", (dialog, whichButton) -> {
+            });
+
+            alert.show();
         });
     }
 
